@@ -165,11 +165,11 @@ class Triangle(object):
 
         self.loops = loops
     
-    def plot_TAD(self, tad_file, line_color='#60636A', linewidth=3, line_style='-', dtypes=None):
+    def plot_TAD(self, tads, line_color='#60636A', linewidth=3, line_style='-', dtypes=None):
 
         tadtype = np.dtype({'names':['chr','start','end'],
                             'formats':dtypes or ['U5', np.int32, np.int32]})
-        tads = np.loadtxt(tad_file, dtype=tadtype, usecols=[0,1,2])
+        tads = np.loadtxt(tads, dtype=tadtype, usecols=[0,1,2]) if isinstance(tads, str) else tads
         tads = tads[(tads['chr']==self.chrom)]
         mask = (tads['end'] > self.start) & (tads['start'] < self.end)
         tads = tads[mask]
