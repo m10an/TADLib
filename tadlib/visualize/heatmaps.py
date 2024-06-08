@@ -165,7 +165,11 @@ class Triangle(object):
 
         self.loops = loops
     
-    def plot_TAD(self, tads, line_color='#60636A', linewidth=3, line_style='-', dtypes=None):
+    def plot_TAD(self, tads, line_color='#60636A', linewidth=3, line_style='-', line_args=None, dtypes=None):
+        line_args = line_args or {}
+        line_args['color'] = line_args.get('color') or line_color
+        line_args['linestyle'] = line_args.get('linestyle') or line_style
+        line_args['linewidth'] = line_args.get('linewidth') or linewidth
 
         tadtype = np.dtype({'names':['chr','start','end'],
                             'formats':dtypes or ['U5', np.int32, np.int32]})
@@ -193,8 +197,7 @@ class Triangle(object):
             y = [self.hy[:-1, :-1][n-1-si, si] - 1,
                  self.hy[:-1, :-1][n-1-si, ei] + 1,
                  self.hy[:-1, :-1][n-1-ei, ei] - 1]
-            self.heatmap_ax.plot(x, y, color=line_color, linestyle=line_style,
-                linewidth=linewidth)
+            self.heatmap_ax.plot(x, y, **line_args)
         
         self.heatmap_ax.set_xlim(self.hx.min(), self.hx.max())
         self.heatmap_ax.set_ylim(self.hy.min(), self.hy.max())
